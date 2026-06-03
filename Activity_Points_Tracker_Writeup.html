@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Activity Points Tracker - Exam Writeup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #475569;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+        p {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        strong {
+            font-weight: bold;
+        }
+        code {
+            font-family: Consolas, monospace;
+            background-color: #f1f5f9;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center; color: #4f46e5; margin-bottom: 5px;">Activity Point Tracker</h1>
+    <p style="text-align: center; color: #64748b; font-size: 14px; margin-top: 0; margin-bottom: 40px;">BMSCE AICTE Activity Points Tracker mobile application project writeup.</p>
+
+    <h2>1. Project Title</h2>
+    <p><strong>Activity Point Tracker</strong> (BMSCE AICTE Activity Points Tracker)</p>
+
+    <h2>2. Objectives</h2>
+    <ul>
+        <li><strong>Graduation Compliance:</strong> To facilitate engineering students in tracking and reaching the mandatory <strong>100 AICTE Activity Points</strong> required for the award of their B.E. degree.</li>
+        <li><strong>Categorised Point Tallies:</strong> To automate points compilation across 8 distinct AICTE categories (Events, Professional Bodies, Exams, Seminars, Clubs, Volunteering, Academics, and Cultural).</li>
+        <li><strong>Verification Simulation:</strong> To integrate a certificate scanner with a 30-second verification queue, simulating a proctoring approval process.</li>
+        <li><strong>Offline-First & Local Persistence:</strong> To store student details, sessions, and activity logs securely on the client-side device using <code>AsyncStorage</code>, avoiding the need for database hosting.</li>
+        <li><strong>Modern Visual Interface:</strong> To present a highly interactive, responsive light-mode Indigo/Slate theme that compiles on mobile devices via Expo Go.</li>
+    </ul>
+
+    <h2>3. Software and Hardware Requirements</h2>
+    
+    <h3>A. Software Requirements</h3>
+    <ul>
+        <li><strong>Operating System:</strong> macOS / Windows / Linux (for development); iOS / Android (for client runtimes).</li>
+        <li><strong>Runtime Environment:</strong> Node.js (v20.x or above), NPM (v10.x).</li>
+        <li><strong>Frameworks & Libraries:</strong> Expo SDK 54, React Native (v0.81.5), React (v19.1.0).</li>
+        <li><strong>Local Storage API:</strong> <code>@react-native-async-storage/async-storage</code> (v2.2.0).</li>
+        <li><strong>Asset Pickers:</strong> <code>expo-image-picker</code>, <code>expo-camera</code>.</li>
+        <li><strong>Development Tools:</strong> Expo CLI, VS Code, Git.</li>
+    </ul>
+
+    <h3>B. Hardware Requirements</h3>
+    <ul>
+        <li><strong>Development PC:</strong> Minimum 8GB RAM, Core i5/Apple Silicon processor.</li>
+        <li><strong>Target Device:</strong> iPhone / Android phone with camera capability running the <strong>Expo Go</strong> application.</li>
+    </ul>
+
+    <h2>4. ER Diagram</h2>
+    <p>The system utilizes an offline-first relational schema mapped locally. Below is the structural layout of entities, attributes, and relationships:</p>
+    
+    <h3>A. Entities & Attributes</h3>
+    <ul>
+        <li><strong>Student (User):</strong>
+            <ul>
+                <li><code>USN</code> (Primary Key - e.g., <code>1BM22CS001</code>)</li>
+                <li><code>Name</code> (e.g., <code>Sahil</code>)</li>
+                <li><code>Degree</code> (e.g., <code>B.E. Computer Science</code>)</li>
+                <li><code>Password</code> (Encrypted credential key)</li>
+            </ul>
+        </li>
+        <li><strong>Activity (Ledger Entry):</strong>
+            <ul>
+                <li><code>ActivityID</code> (Primary Key - Unique timestamp-based string)</li>
+                <li><code>Title</code> (e.g., <code>NSS Blood Donation Camp</code>)</li>
+                <li><code>Category</code> (Foreign Key mapping to predefined category ID)</li>
+                <li><code>Detail</code> (Specific criteria / role metadata)</li>
+                <li><code>Date</code> (Submission/event date string)</li>
+                <li><code>Points</code> (Integer credit value)</li>
+                <li><code>Status</code> (String: <code>Approved</code> / <code>Pending</code> / <code>Verifying</code>)</li>
+                <li><code>verificationTimeLeft</code> (Integer - remaining seconds countdown)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>B. Relationships</h3>
+    <ul>
+        <li><strong>Student</strong> has <strong>Activities:</strong> <strong>One-to-Many (1:N)</strong> relationship. A single student profile can register multiple activities in their ledger log, while each activity belongs strictly to one student.</li>
+    </ul>
+
+    <h2>5. Conclusion and Future Scope</h2>
+    
+    <h3>A. Conclusion</h3>
+    <p>The <em>Activity Point Tracker</em> successfully transitions paper-heavy graduation point tracking into a streamlined mobile solution. Built on React Native and Expo Go, the app provides instant point visualisations, category charts, and certificate upload capabilities. The local-first data model ensures high performance, zero server-maintenance costs, and total user privacy.</p>
+
+    <h3>B. Future Scope</h3>
+    <ul>
+        <li><strong>Production OCR Integration:</strong> Connecting the scanner camera to a cloud vision OCR API (e.g., Google Cloud Vision or AWS Textract) to read physical certificate texts and extract fields automatically in real-time.</li>
+        <li><strong>Proctor Synchronization:</strong> Implementing a backend (Node.js/Express + PostgreSQL/MongoDB) to sync logs to a centralized database, letting college proctors inspect and approve student entries from their own portal.</li>
+        <li><strong>Geotag & Timestamp Auditing:</strong> Reading metadata from uploaded photo files to verify that geo-tagged event photos match the date and location of the registered activity.</li>
+    </ul>
+
+</body>
+</html>
